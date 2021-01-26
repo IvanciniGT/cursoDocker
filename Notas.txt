@@ -125,4 +125,60 @@ Al instalar Docker, se nos monta:
  - un cliente
 
 -------------------------
-Imagen de contenedor
+docker - cli
+
+dockerd
+    > containerd
+        > runc tomcat1
+        > runc tomcat2
+
+-----------
+Entorno local:
+    Docker <<< Docker-compose
+    
+Entorno de producción:
+    [-Docker: contanerd | crio ] <<< Kubernetes <<< Openshift (redhat)
+        - HA: High availability: Que aquello funcione "siempre"
+            - Cluster Activo/Pasivo , Activo/Activo
+        - Tolerancia fallos
+
+
+------
+Al crear un contenedor
+    Su filesystem, de donde se saca? de la imagen de contenedor
+    Se almacena en dos capas:
+        - CAPA BASE es la de la imagen de contenedor
+        - MODIFICACIONES sobre el filesystem original
+        
+-----
+2 contenedores generados desde la misma imagen
+
+BITNAMI/TOMCAT
+    filesystem 
+        /bin
+        /var
+        /etc
+        /home
+        ....
+    
+TOMCAT1
+    ls ----> veo es el filesystem de la imagen
+    Cualquier cambio en 1 contenedor genera una capa de información nueva superpuesta al filesystem de la imagen
+TOMCAT2
+    ls ----> veo es el filesystem de la imagen
+
+¿Que ocurre cuando borro un contenedor?
+    La capa de modificaciones en el filesystem se borra
+
+LOS CONTENEDORES "OUT OF THE BOX" NO TIENEN PERSISTENCIA EN LOS DATOS
+    Para conseguir persistencia DOCKER (CONTENEDORES) utilizan el concepto de VOLUMEN
+
+Qué es un volumen?
+    - Una carpeta/archivo compartido entre el host y el contenedor
+    - Esa carpeta/archivo realemnet está almacenada en el filesystem del HOST
+    - Es montada en tiempo de ejecución dentro del contenedor, en la ruta que se desee
+
+MYSQL 5.1
+    Datos en unos ficheros
+    
+MYSQL 5.2
